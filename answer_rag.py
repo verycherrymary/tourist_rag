@@ -15,31 +15,31 @@ def answer_with_rag2(
     # Собираем документы с помощью ретривера
     st.write("=> Retrieving documents...")
     relevant_docs = knowledge_index.similarity_search(query=question, k=num_retrieved_docs)
-    
-    # Сохраняем полные документы с метаданными
-    full_docs = relevant_docs.copy()
     relevant_contents = [doc.page_content for doc in relevant_docs]
-
+    
+    # Получаем ранкер (теперь это CrossEncoder)
     reranker = get_reranker()
-    if reranker:
-        st.write("=> Reranking documents...")
-        try:
-            reranked_results = reranker.rerank(question, relevant_contents, k=num_docs_final)
-            if isinstance(reranked_results[0], dict) and "index" in reranked_results[0]:
-                full_docs = [full_docs[result["index"]] for result in reranked_results]
-                relevant_contents = [result["content"] for result in reranked_results]
-            else:
-                reranked_contents = [result["content"] if isinstance(result, dict) else result for result in reranked_results]
-                full_docs = [doc for doc in full_docs if doc.page_content in reranked_contents][:num_docs_final]
-                relevant_contents = reranked_contents[:num_docs_final]
-        except Exception as e:
-            st.error(f"Ошибка при реранкинге: {e}")
-            full_docs = full_docs[:num_docs_final]
-            relevant_contents = relevant_contents[:num_docs_final]
+    
+    st.write("=> Reranking documents...")
+    try:
+        # CrossEncoder работает иначе, чем ColBERT
+        scores = reranker.predict([(question, doc) for doc in relevant_contents])
+        
+        # Сортируем документы по убыванию релевантности
+        scored_docs = list(zip(relevant_docs, scores))
+        scored_docs.sort(key=lambda x: x[1], reverse=True)
+        
+        # Отбираем топ документов
+        full_docs = [doc for doc, score in scored_docs[:num_docs_final]]
+        relevant_contents = [doc.page_content for doc in full_docs]
+    except Exception as e:
+        st.error(f"Ошибка при реранкинге: {e}")
+        full_docs = relevant_docs[:num_docs_final]
+        relevant_contents = relevant_contents[:num_docs_final]
 
     # Формируем контекст для промпта
     context = "\nExtracted documents:\n"
-    context += "".join([f"Document {i}:::\n{doc}\n" for i, doc in enumerate(relevant_contents[:num_docs_final])])
+    context += "".join([f"Document {i}:::\n{doc}\n" for i, doc in enumerate(relevant_contents)])
 
     # Генерируем ответ
     st.write("=> Generating answer...")
