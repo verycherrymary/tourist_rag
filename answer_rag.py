@@ -66,9 +66,15 @@ def answer_with_rag2(
                 if "image" in doc.metadata and doc.metadata["image"]:
                     try:
                         if isinstance(doc.metadata["image"], str):
-                            if doc.metadata["image"].startswith('data:image'):
-                                # Обработка base64 изображений
-                                st.image(doc.metadata["image"], caption=f"Изображение из документа {i+1}")
+                            if doc.metadata["image"].startswith('/9j/'):
+                                # Для base64 строк вида "data:image/png;base64,..."
+                                import base64
+                                from io import BytesIO
+                                from PIL import Image
+                                
+                                img_bytes = base64.b64decode(doc.metadata["image"])
+                                img = Image.open(BytesIO(img_bytes))
+                                st.image(img, caption=f"Изображение из документа {i+1}")
                             else:
                                 # Предполагаем, что это путь к файлу
                                 st.image(doc.metadata["image"], caption=f"Изображение из документа {i+1}")
@@ -76,6 +82,6 @@ def answer_with_rag2(
                             # Обработка бинарных данных изображения
                             st.image(doc.metadata["image"], caption=f"Изображение из документа {i+1}")
                     except Exception as e:
-                        st.error(f"Ошибка загрузки изображения: {e}")
+                        st.error(f"Ошибка загрузки изображения: {str(e)}")
 
     return answer, full_docs[:num_docs_final]
