@@ -1,6 +1,5 @@
 import os
 os.environ["NO_CUDA_EXT"] = "1"  # Полностью отключаем C++ расширения
-os.environ["COLBERT_LOAD_TORCH_EXTENSION"] = "0"  # Дополнительная страховка
 
 from typing import Optional
 from sentence_transformers import CrossEncoder
