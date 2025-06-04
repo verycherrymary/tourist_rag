@@ -16,7 +16,7 @@ st.header("Города: Ярославль, Екатеринбург, Нижн�
 @st.cache_resource
 def load_models():
     # READER_LLM = get_reader_llm()
-    READER_LLM = get_reader_llm(name="Qwen/Qwen1.8-1.8B-Instruct")
+    READER_LLM = get_reader_llm(name="microsoft/phi-2")
     embedding_model, KNOWLEDGE_VECTOR_DATABASE = get_retriever()
     return READER_LLM, embedding_model, KNOWLEDGE_VECTOR_DATABASE
 
