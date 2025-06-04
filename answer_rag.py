@@ -1,5 +1,6 @@
 from transformers import Pipeline
-from langchain.vectorstores import FAISS
+# from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from reranker import get_reranker, get_rag_prompt_template
 from typing import List, Tuple
 from langchain.docstore.document import Document as LangchainDocument

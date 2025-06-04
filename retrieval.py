@@ -1,6 +1,7 @@
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from loader import load_and_split_markdown
-from langchain.vectorstores import FAISS
+# from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores.utils import DistanceStrategy
 
 
