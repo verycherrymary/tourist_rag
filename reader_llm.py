@@ -1,5 +1,5 @@
 from transformers import pipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
 def get_reader_llm(name="Qwen/Qwen2.5-3B-Instruct"):
@@ -25,4 +25,4 @@ def get_reader_llm(name="Qwen/Qwen2.5-3B-Instruct"):
         return_full_text=False,
         max_new_tokens=50  # Еще больше уменьшаем для надежности
     )
-    return READER_LLM, tokenizer
+    return READER_LLM

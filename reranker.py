@@ -4,7 +4,7 @@ os.environ["COLBERT_LOAD_TORCH_EXTENSION"] = "0"  # Дополнительная
 
 from typing import Optional
 from sentence_transformers import CrossEncoder
-from reader_llm import get_reader_llm
+from transformers import AutoTokenizer
 
 def get_reranker(name: Optional[str] = None) -> CrossEncoder:
     """
@@ -34,8 +34,8 @@ Now here is the question you need to answer.
 Question: {question}""",
         }
     ]
-    
-    _, tokenizer = get_reader_llm()
+    READER_MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
+    tokenizer = AutoTokenizer.from_pretrained(READER_MODEL_NAME)
     return tokenizer.apply_chat_template(
         prompt_in_chat_format, 
         tokenize=False, 

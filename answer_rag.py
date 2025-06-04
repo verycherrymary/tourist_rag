@@ -40,11 +40,12 @@ def answer_with_rag2(
     # Формируем контекст для промпта
     context = "\nExtracted documents:\n"
     context += "".join([f"Document {i}:::\n{doc}\n" for i, doc in enumerate(relevant_contents)])
-
+    # st.write(context)
     # Генерируем ответ
     st.write("=> Generating answer...")
     RAG_PROMPT_TEMPLATE = get_rag_prompt_template()
     final_prompt = RAG_PROMPT_TEMPLATE.format(question=question, context=context)
+    # st.write(final_prompt)
     answer = llm(final_prompt)[0]["generated_text"]
 
     # Отображаем результаты с изображениями и координатами
