@@ -10,11 +10,11 @@ st.header("Города: Ярославль, Екатеринбург, Нижн�
 
 @st.cache_resource
 def load_models():
-    READER_LLM, tokenizer = get_reader_llm()
+    READER_LLM = get_reader_llm()
     embedding_model, KNOWLEDGE_VECTOR_DATABASE = get_retriever()
     return READER_LLM, embedding_model, KNOWLEDGE_VECTOR_DATABASE
 
-READER_LLM, _, _, KNOWLEDGE_VECTOR_DATABASE = load_models()
+READER_LLM, _, KNOWLEDGE_VECTOR_DATABASE = load_models()
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
