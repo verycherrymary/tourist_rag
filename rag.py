@@ -1,3 +1,7 @@
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"  # Решает проблемы с многопоточностью
+os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"  # Отключает прогресс-бары
+
 from reader_llm import get_reader_llm
 from retrieval import get_retriever
 from answer_rag import answer_with_rag2

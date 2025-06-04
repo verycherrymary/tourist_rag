@@ -3,7 +3,8 @@ from loader import load_and_split_markdown
 # from langchain.vectorstores import FAISS
 from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores.utils import DistanceStrategy
-
+from huggingface_hub.utils import disable_progress_bars
+disable_progress_bars()  # Отключает прогресс-бары загрузки
 
 
 def get_retriever(name='intfloat/multilingual-e5-large'):
