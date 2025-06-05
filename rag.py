@@ -15,7 +15,7 @@ st.header("Города: Ярославль, Екатеринбург, Нижн�
 
 @st.cache_resource
 def load_models():
-    READER_LLM = get_reader_llm(name="Vikhrmodels/QVikhr-3-1.7B-Instruction-noreasoning")
+    READER_LLM = get_reader_llm(name="BSC-LT/salamandra-2b-instruct")
     # READER_LLM = get_reader_llm(name="microsoft/phi-2") # легкая модель для приложения на сайте streamlit
     embedding_model, KNOWLEDGE_VECTOR_DATABASE = get_retriever()
     return READER_LLM, embedding_model, KNOWLEDGE_VECTOR_DATABASE
